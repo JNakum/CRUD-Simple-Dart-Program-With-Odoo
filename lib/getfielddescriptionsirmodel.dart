@@ -12,13 +12,13 @@ Future<Map<String, String>> getFieldDescriptions() async {
 
   var body = jsonEncode({
     "query": """
-      query MyQuery(\$domain:[[ANY]]){
-        IrModelFields(domain:\$domain){
-          name
-          field_description
-        }
-      }
-    """,
+              query MyQuery(\$domain:[[Any]]){
+                IrModelFields(domain:\$domain) {
+                  name 
+                  field_description
+                }
+              }
+      """,
     "variables": {
       "domain": [
         ["model", "=", "learn.basic.fields"],
@@ -28,7 +28,7 @@ Future<Map<String, String>> getFieldDescriptions() async {
           ["id", "name", "age", "salary", "gender"]
         ]
       ],
-    }
+    },
   });
 
   var response = await http.post(
@@ -39,11 +39,10 @@ Future<Map<String, String>> getFieldDescriptions() async {
 
   var jsonResponse = jsonDecode(response.body);
 
-  // Map to store field descriptions
   Map<String, String> fieldDescriptions = {};
 
-  for (var field in jsonResponse['data']['IrModelFields']) {
-    fieldDescriptions[field['name']] = field['field_description'];
+  for (var field in jsonResponse["data"]["IrModelFields"]) {
+    fieldDescriptions[field["name"]] = field["field_description"];
   }
   print("$fieldDescriptions");
 
